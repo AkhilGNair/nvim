@@ -39,7 +39,22 @@ return require('packer').startup(function(use)
 		   {'hrsh7th/nvim-cmp'},
 		   {'hrsh7th/cmp-nvim-lsp'},
 		   {'L3MON4D3/LuaSnip'},
-  }
-}
+		}
+	}
+
+   use{
+	  'linux-cultist/venv-selector.nvim',
+	  dependencies = { 'neovim/nvim-lspconfig', 'nvim-telescope/telescope.nvim', 'mfussenegger/nvim-dap-python' },
+	  opts = {
+	    -- Your options go here
+	    -- name = "venv",
+	    -- auto_refresh = false
+	  },
+	}
 
 end)
+  
+  
+  
+  
+  
