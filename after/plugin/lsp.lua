@@ -1,10 +1,16 @@
+-- LSP set up
 local lsp = require('lsp-zero')
 
 require("mason").setup()
 require("mason-lspconfig").setup({
-  ensure_installed = {'pyright', 'ruff_lsp'},
+  ensure_installed = {'pyright', 'ruff_lsp', 'jsonls'},
 })
 
+-- Specific language servers
+require("lspconfig").jsonls.setup {}
+require("lspconfig").ruff_lsp.setup {}
+
+-- Just for completion, diagnostics disabled
 require("lspconfig").pyright.setup({
   settings = {
     pyright = {
@@ -13,8 +19,7 @@ require("lspconfig").pyright.setup({
   },
 })
 
-require("lspconfig").ruff_lsp.setup {}
-
+-- Completion
 local cmp = require('cmp')
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
 
@@ -22,9 +27,6 @@ cmp.setup({
   sources = {
     {name = 'path'},
     {name = 'nvim_lsp'},
-    {name = 'nvim_lua'},
-    {name = 'luasnip', keyword_length = 2},
-    {name = 'buffer', keyword_length = 3},
   },
   formatting = lsp.cmp_format(),
   mapping = cmp.mapping.preset.insert({
@@ -34,3 +36,40 @@ cmp.setup({
     ['<C-Space>'] = cmp.mapping.complete(),
   }),
 })
+
+-- Format and fix
+-- Remember to enable RUFF_EXPERIMENTAL_FORMATTER=true
+
+-- Initialize a variable to control whether formatting should be triggered on save
+local enable_formatting = true
+
+-- Function to toggle the formatting state
+function ToggleFormatting()
+  enable_formatting = not enable_formatting
+  if enable_formatting then
+    print("Formatting enabled")
+  else
+    print("Formatting disabled")
+  end
+end
+
+function Format()
+  if enable_formatting then
+    print("Formatting enabled")
+    vim.lsp.buf.format { async = true }
+  else
+    print("Formatting disabled")
+  end
+end
+
+vim.api.nvim_exec([[
+  augroup AutoFormat
+    autocmd!
+    autocmd BufWritePre *.py,*.yaml,*.json lua Format()
+  augroup END
+]], true)
+
+-- Example key mapping to toggle formatting
+-- vim.keymap.set('n', '<leader>ff', function() vim.lsp.buf.format { async = true } end, bufopts)
+vim.keymap.set('n', '<leader>ff', ':lua Format()<CR>')
+vim.keymap.set('n', '<leader>ft', ':lua ToggleFormatting()<CR>')
