@@ -63,3 +63,13 @@ vim.opt.scrolloff = 8
 -- Place a column line
 vim.opt.colorcolumn = "100"
 
+-- Detect the operating system
+local is_windows = jit.os == "Windows"
+
+-- Set shell-related options if the OS is Windows
+if is_windows then
+  vim.o.shell = "powershell.exe"
+  vim.o.shellcmdflag = "-command"
+  vim.o.shellquote = "\""
+  vim.o.shellxquote = ""
+end

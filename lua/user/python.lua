@@ -1,4 +1,8 @@
 -- Set a global python version for the LSP
+
+-- Platform independent directory separator
+local sep = package.config:sub(1, 1) -- \ or /
+
 local home = os.getenv("HOME")
 vim.g.python3_host_prog = home .. "/.pyenv/versions/pynvim/bin/python"
 
@@ -10,6 +14,7 @@ vim.keymap.set("n", "<leader>vc", "<cmd>VenvSelectCached<CR>")
 venv_selector.setup({
   search = false,
   notify_user_on_activate = true,
+  pyenv_path = os.getenv("PYENV_ROOT") .. sep .. "versions"
 })
 
 vim.api.nvim_create_autocmd('VimEnter', {
@@ -23,4 +28,3 @@ vim.api.nvim_create_autocmd('VimEnter', {
   end,
   once = true,
 })
-

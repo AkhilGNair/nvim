@@ -66,6 +66,8 @@ return {
         },
         ruff_lsp = {},
         yamlls = {},
+        terraformls = {},
+        tflint = {},
       }
 
       -- Default handlers for LSP
