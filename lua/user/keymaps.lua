@@ -100,6 +100,7 @@ M.map_lsp_keybinds = function(buffer_number)
   )
 
   -- See `:help K` for why this keymap
+  nnoremap("gl", vim.diagnostic.open_float, { desc = "LSP: Open Diagnostic", buffer = buffer_number })
   nnoremap("K", vim.lsp.buf.hover, { desc = "LSP: Hover Documentation", buffer = buffer_number })
   nnoremap("<leader>k", vim.lsp.buf.signature_help, { desc = "LSP: Signature Documentation", buffer = buffer_number })
   inoremap("<C-k>", vim.lsp.buf.signature_help, { desc = "LSP: Signature Documentation", buffer = buffer_number })
