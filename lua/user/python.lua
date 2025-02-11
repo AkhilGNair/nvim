@@ -14,7 +14,8 @@ vim.keymap.set("n", "<leader>vc", "<cmd>VenvSelectCached<CR>")
 venv_selector.setup({
   search = false,
   notify_user_on_activate = true,
-  pyenv_path = os.getenv("PYENV_ROOT") .. sep .. "versions"
+  pyenv_path = os.getenv("PYENV_ROOT") .. sep .. "versions",
+  stay_on_this_version = true
 })
 
 vim.api.nvim_create_autocmd('VimEnter', {
@@ -23,7 +24,7 @@ vim.api.nvim_create_autocmd('VimEnter', {
   callback = function()
     local venv = vim.fn.findfile('.python-version', vim.fn.getcwd() .. ';')
     if venv ~= '' then
-      require('venv-selector').retrieve_from_cache()
+      venv_selector.retrieve_from_cache()
     end
   end,
   once = true,

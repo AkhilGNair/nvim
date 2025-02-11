@@ -34,7 +34,8 @@ return {
 
       -- Configure mason to auto install servers
       require("mason-lspconfig").setup({
-        ensure_installed = { "ruff_lsp" }
+        ensure_installed = { "ruff" },
+        automatic_installation = true
       })
 
       -- Override tsserver diagnostics to filter out specific messages
@@ -55,16 +56,15 @@ return {
             },
           },
         },
-        nil_ls = {},
-        pyright = {
-          settings = {
-            pyright = {
-              disabled = { "diagnostics" },
-            },
-          },
-
-        },
-        ruff_lsp = {},
+        -- nil_ls = {},
+        -- pyright = {
+        --  settings = {
+        --    pyright = {
+        --       disabled = { "diagnostics" },
+        --     },
+        --   },
+        -- },
+        ruff = {},
         yamlls = {},
         terraformls = {},
         tflint = {},
@@ -108,7 +108,7 @@ return {
       end
 
       -- Congifure LSP linting, formatting, diagnostics, and code actions
-      local formatting = null_ls.builtins.formatting
+      -- local formatting = null_ls.builtins.formatting
       -- local diagnostics = null_ls.builtins.diagnostics
       -- local code_actions = null_ls.builtins.code_actions
 
@@ -116,7 +116,7 @@ return {
         border = "rounded",
         sources = {
           -- formatting
-          formatting.prettier,
+          -- formatting.prettier,
           -- formatting.stylua,
 
           -- -- diagnostics
