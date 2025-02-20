@@ -57,13 +57,13 @@ return {
           },
         },
         -- nil_ls = {},
-        -- pyright = {
-        --  settings = {
-        --    pyright = {
-        --       disabled = { "diagnostics" },
-        --     },
-        --   },
-        -- },
+        pyright = {
+          settings = {
+            pyright = {
+              disabled = { "diagnostics" },
+            },
+          },
+        },
         ruff = {},
         yamlls = {},
         terraformls = {},
