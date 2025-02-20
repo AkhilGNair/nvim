@@ -33,6 +33,10 @@ vim.keymap.set("n", "<leader>tc", "<cmd>tabc<CR>")
 vim.keymap.set("n", "<C-PageUp>", "gt")
 vim.keymap.set("n", "<C-PageDown>", "gT")
 
+-- Using quickfix
+vim.keymap.set("n", "<A-Down>", "<cmd>cnext<CR>")
+vim.keymap.set("n", "<A-Up>", "<cmd>cprevious<CR>")
+
 -- Terminal mode remaps
 vim.keymap.set('n', '<leader>tt', '<cmd>terminal<CR>i')
 vim.keymap.set('n', '<leader>tp', '<cmd>terminal<CR>iipython<CR>')
@@ -49,11 +53,21 @@ vim.api.nvim_exec([[
 -- Telescope
 nnoremap("<leader>?", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
 nnoremap("<leader>sb", require("telescope.builtin").buffers, { desc = "[S]earch Open [B]uffers" })
+
 nnoremap("<leader>sf", function()
   require("telescope.builtin").find_files({ hidden = true })
 end, { desc = "[S]earch [F]iles" })
+
+nnoremap("<leader>sg", function()
+  require("telescope.builtin").live_grep({ hidden = true })
+end, { desc = "[S]earch by [G]rep" })
+
+nnoremap("<leader>en", function()
+  require("telescope.builtin").find_files {
+    cwd = vim.fn.stdpath("config")
+  }
+end, { desc = "[E]dit [N]eovim" })
 nnoremap("<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
-nnoremap("<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
 
 nnoremap("<leader>sc", function()
   require("telescope.builtin").commands(require("telescope.themes").get_dropdown({

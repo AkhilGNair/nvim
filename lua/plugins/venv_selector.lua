@@ -6,6 +6,8 @@ return {
       'nvim-telescope/telescope.nvim',
       'mfussenegger/nvim-dap-python',
     },
-    opts = {},
+    opts = {
+      stay_on_this_version = true
+    },
   }
 }
