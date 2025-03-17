@@ -12,6 +12,7 @@ local TERM = os.getenv("TERM")
 -- Normal --
 -- Disable Space bar since it'll be used as the leader key
 nnoremap("<space>", "<nop>")
+nnoremap("<leader><leader>x", "<cmd>source %<CR>", { desc = "Execute current file" })
 
 -- Open Explorer
 vim.keymap.set("n", "<leader>pv", "<cmd>Oil<CR>")
