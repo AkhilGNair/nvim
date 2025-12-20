@@ -6,9 +6,10 @@ return {
       "nvim-lua/plenary.nvim",
       {
         "nvim-telescope/telescope-fzf-native.nvim",
-        build =
-        "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-        cond = vim.fn.executable("cmake") == 1,
+        build = "make",
+        cond = function()
+          return vim.fn.executable("make") == 1
+        end,
       },
     },
     config = function()
@@ -42,10 +43,19 @@ return {
           },
           hidden = true,
         },
+        extensions = {
+          fzf = {
+            fuzzy = true,
+            override_generic_sorter = true,
+            override_file_sorter = true,
+            case_mode = "smart_case",
+          },
+        },
       })
 
       -- Enable telescope fzf native, if installed
-      pcall(require("telescope").load_extension, "fzf")
+      -- pcall(require("telescope").load_extension, "fzf")
+      require("telescope").load_extension("fzf")
     end,
   },
 }

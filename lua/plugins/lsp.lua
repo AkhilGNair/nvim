@@ -19,7 +19,7 @@ return {
       { "j-hui/fidget.nvim", tag = "legacy" },
     },
     config = function()
-      local null_ls = require("null-ls")
+      -- local null_ls = require("null-ls")
       local map_lsp_keybinds = require("user.keymaps").map_lsp_keybinds -- Has to load keymaps before pluginslsp
 
       -- Use neodev to configure lua_ls in nvim directories - must load before lspconfig
@@ -27,15 +27,13 @@ return {
 
       -- Setup mason so it can manage 3rd party LSP servers
       require("mason").setup({
-        ui = {
-          border = "rounded",
-        },
+        ui = { border = "rounded" },
       })
 
       -- Configure mason to auto install servers
       require("mason-lspconfig").setup({
         ensure_installed = { "ruff" },
-        automatic_installation = true
+        automatic_installation = true,
       })
 
       -- Override tsserver diagnostics to filter out specific messages
@@ -56,16 +54,54 @@ return {
             },
           },
         },
-        -- nil_ls = {},
-        pyright = {
-          settings = {
-            pyright = {
-              disabled = { "diagnostics" },
-            },
-          },
-        },
+        nil_ls = {},
+        -- pyright = {
+        --   settings = {
+        --     pyright = {
+        --       disabled = { "diagnostics" },
+        --     },
+        --   },
+        -- },
         ruff = {},
-        yamlls = {},
+        dockerls = {},
+        helm_ls = {
+          settings = {
+            ['helm-ls'] = {
+              logLevel = "info",
+              valuesFiles = {
+                mainValuesFile = "values.yaml",
+                additionalValuesFilesGlobPattern = "values*.yaml"
+              },
+              helmLint = {
+                enabled = true,
+                ignoredMessages = {},
+              },
+              yamlls = {
+                enabled = true,
+                enabledForFilesGlob = "*.{yaml,yml}",
+                diagnosticsLimit = 50,
+                showDiagnosticsDirectly = false,
+                path = "yaml-language-server",
+                initTimeoutSeconds = 3,
+                config = {
+                  schemas = {
+                    kubernetes = "templates/**",
+                  },
+                  completion = true,
+                  hover = true,
+                }
+              }
+            }
+          }
+        },
+        yamlls = {
+          filetypes = { "yaml", "yml" },
+          settings = {
+            yaml = {
+              format = { enable = true }
+            }
+          }
+        },
         terraformls = {},
         tflint = {},
       }
@@ -87,12 +123,7 @@ return {
 
         -- Create a command `:Format` local to the LSP buffer
         vim.api.nvim_buf_create_user_command(buffer_number, "Format", function(_)
-          vim.lsp.buf.format({
-            -- filter = function(format_client)
-            --   -- Use Prettier to format TS/JS if it's available
-            --   return format_client.name ~= "tsserver" or not null_ls.is_registered("prettier")
-            -- end,
-          })
+          pcall(vim.lsp.buf.format)
         end, { desc = "LSP: Format current buffer with LSP" })
       end
 
@@ -107,39 +138,12 @@ return {
         })
       end
 
-      -- Congifure LSP linting, formatting, diagnostics, and code actions
-      -- local formatting = null_ls.builtins.formatting
-      -- local diagnostics = null_ls.builtins.diagnostics
-      -- local code_actions = null_ls.builtins.code_actions
-
-      null_ls.setup({
-        border = "rounded",
-        sources = {
-          -- formatting
-          -- formatting.prettier,
-          -- formatting.stylua,
-
-          -- -- diagnostics
-          -- diagnostics.ruff_lsp.with({
-          --   condition = function(utils)
-          --     return utils.root_has_file({ "pyproject.toml", "setup.py" })
-          --   end,
-          -- }),
-
-          -- -- code actions
-          -- code_actions.ruff_lsp.with({
-          --   condition = function(utils)
-          --     return utils.root_has_file({ "pyproject.toml", "setup.py" })
-          --   end,
-          -- }),
-        },
-      })
-
       -- Configure borderd for LspInfo ui
       require("lspconfig.ui.windows").default_options.border = "rounded"
 
       -- Configure diagostics border
       vim.diagnostic.config({
+        virtual_text = true,
         float = {
           border = "rounded",
         },

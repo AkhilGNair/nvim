@@ -17,7 +17,7 @@ nnoremap("<space>", "<nop>")
 vim.keymap.set("n", "<leader>pv", "<cmd>Oil<CR>")
 
 -- Remove highlights
-vim.keymap.set("n", "<leader>/", "<cmd>noh<CR>")
+vim.keymap.set("n", "<leader>ch", "<cmd>noh<CR>")
 
 -- Using splits
 vim.keymap.set("n", "<C-A-Right>", "<cmd>vsplit<CR> <cmd>wincmd l<CR>")
@@ -67,6 +67,15 @@ nnoremap("<leader>en", function()
     cwd = vim.fn.stdpath("config")
   }
 end, { desc = "[E]dit [N]eovim" })
+
+nnoremap("<leader>eb", function()
+  require("telescope.builtin").find_files {
+    cwd = os.getenv("HOME"),
+    find_command = { "rg", "--files", "--hidden", "--max-depth", "1" },
+    default_text = ".bash"
+  }
+end, { desc = "[E]dit [B]ash config" })
+
 nnoremap("<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
 
 nnoremap("<leader>sc", function()
@@ -80,6 +89,11 @@ nnoremap("<leader>/", function()
     previewer = false,
   }))
 end, { desc = "[/] Fuzzily search in current buffer]" })
+
+-- Format the current buffer
+nnoremap("<leader>f", function()
+  require("conform").format({ async = true, lsp_fallback = true })
+end, { desc = "Format buffer" })
 
 -- LSP Keybinds --
 M.map_lsp_keybinds = function(buffer_number)

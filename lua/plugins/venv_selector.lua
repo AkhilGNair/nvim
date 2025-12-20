@@ -6,8 +6,9 @@ return {
       'nvim-telescope/telescope.nvim',
       'mfussenegger/nvim-dap-python',
     },
-    opts = {
-      stay_on_this_version = true
+    keys = {
+      { ",v", "<cmd>VenvSelect<cr>" },
     },
+    opts = {},
   }
 }
