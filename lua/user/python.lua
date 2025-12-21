@@ -15,7 +15,6 @@ venv_selector.setup({
   search = true,
   notify_user_on_activate = true,
   name = { "venv", ".venv" },
-  pyenv_path = os.getenv("PYENV_ROOT") .. sep .. "versions",
   stay_on_this_version = true
 })
 

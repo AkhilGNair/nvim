@@ -3,7 +3,6 @@ local vnoremap = require("user.keymap_utils").vnoremap
 local inoremap = require("user.keymap_utils").inoremap
 local tnoremap = require("user.keymap_utils").tnoremap
 local xnoremap = require("user.keymap_utils").xnoremap
-local utils = require("user.utils")
 
 local M = {}
 
@@ -17,7 +16,7 @@ nnoremap("<space>", "<nop>")
 vim.keymap.set("n", "<leader>pv", "<cmd>Oil<CR>")
 
 -- Remove highlights
-vim.keymap.set("n", "<leader>/", "<cmd>noh<CR>")
+vim.keymap.set("n", "<leader>rh", "<cmd>noh<CR>", { desc = "[r]emove [h]ighlights" })
 
 -- Using splits
 vim.keymap.set("n", "<C-A-Right>", "<cmd>vsplit<CR> <cmd>wincmd l<CR>")
@@ -113,8 +112,7 @@ M.map_lsp_keybinds = function(buffer_number)
     { desc = "LSP: [P]roject [S]ymbols", buffer = buffer_number }
   )
 
-  -- See `:help K` for why this keymap
-  nnoremap("gl", vim.diagnostic.open_float, { desc = "LSP: Open Diagnostic", buffer = buffer_number })
+  nnoremap("<leader>gl", vim.diagnostic.open_float, { desc = "LSP: Open Diagnostic", buffer = buffer_number })
   nnoremap("K", vim.lsp.buf.hover, { desc = "LSP: Hover Documentation", buffer = buffer_number })
   nnoremap("<leader>k", vim.lsp.buf.signature_help, { desc = "LSP: Signature Documentation", buffer = buffer_number })
   inoremap("<C-k>", vim.lsp.buf.signature_help, { desc = "LSP: Signature Documentation", buffer = buffer_number })

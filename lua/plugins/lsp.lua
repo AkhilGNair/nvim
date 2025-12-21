@@ -19,7 +19,6 @@ return {
       { "j-hui/fidget.nvim", tag = "legacy" },
     },
     config = function()
-      local null_ls = require("null-ls")
       local map_lsp_keybinds = require("user.keymaps").map_lsp_keybinds -- Has to load keymaps before pluginslsp
 
       -- Use neodev to configure lua_ls in nvim directories - must load before lspconfig
@@ -84,21 +83,11 @@ return {
       local on_attach = function(_client, buffer_number)
         -- Pass the current buffer to map lsp keybinds
         map_lsp_keybinds(buffer_number)
-
-        -- Create a command `:Format` local to the LSP buffer
-        vim.api.nvim_buf_create_user_command(buffer_number, "Format", function(_)
-          vim.lsp.buf.format({
-            -- filter = function(format_client)
-            --   -- Use Prettier to format TS/JS if it's available
-            --   return format_client.name ~= "tsserver" or not null_ls.is_registered("prettier")
-            -- end,
-          })
-        end, { desc = "LSP: Format current buffer with LSP" })
       end
 
       -- Iterate over our servers and set them up
       for name, config in pairs(servers) do
-        require("lspconfig")[name].setup({
+        vim.lsp.config(name, {
           capabilities = default_capabilities,
           filetypes = config.filetypes,
           handlers = vim.tbl_deep_extend("force", {}, default_handlers, config.handlers or {}),
@@ -106,37 +95,6 @@ return {
           settings = config.settings,
         })
       end
-
-      -- Congifure LSP linting, formatting, diagnostics, and code actions
-      -- local formatting = null_ls.builtins.formatting
-      -- local diagnostics = null_ls.builtins.diagnostics
-      -- local code_actions = null_ls.builtins.code_actions
-
-      null_ls.setup({
-        border = "rounded",
-        sources = {
-          -- formatting
-          -- formatting.prettier,
-          -- formatting.stylua,
-
-          -- -- diagnostics
-          -- diagnostics.ruff_lsp.with({
-          --   condition = function(utils)
-          --     return utils.root_has_file({ "pyproject.toml", "setup.py" })
-          --   end,
-          -- }),
-
-          -- -- code actions
-          -- code_actions.ruff_lsp.with({
-          --   condition = function(utils)
-          --     return utils.root_has_file({ "pyproject.toml", "setup.py" })
-          --   end,
-          -- }),
-        },
-      })
-
-      -- Configure borderd for LspInfo ui
-      require("lspconfig.ui.windows").default_options.border = "rounded"
 
       -- Configure diagostics border
       vim.diagnostic.config({
