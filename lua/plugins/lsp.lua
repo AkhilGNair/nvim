@@ -70,15 +70,46 @@ return {
           },
         },
         ruff = {},
-        yamlls = {},
+        helm_ls = {
+          settings = {
+            ['helm-ls'] = {
+              logLevel = "info",
+              valuesFiles = {
+                mainValuesFile = "values.yaml",
+                additionalValuesFilesGlobPattern = "values*.yaml"
+              },
+              helmLint = {
+                enabled = true,
+                ignoredMessages = {},
+              },
+              yamlls = {
+                enabled = true,
+                enabledForFilesGlob = "*.{yaml,yml}",
+                diagnosticsLimit = 50,
+                showDiagnosticsDirectly = false,
+                path = "yaml-language-server",
+                initTimeoutSeconds = 3,
+                config = {
+                  schemas = {
+                    kubernetes = "templates/**",
+                  },
+                  completion = true,
+                  hover = true,
+                }
+              }
+            }
+          }
+        },
+        yamlls = {
+          filetypes = { "yaml", "yml" },
+          settings = {
+            yaml = {
+              format = { enable = true }
+            }
+          }
+        },
         terraformls = {},
         tflint = {},
-      }
-
-      -- Default handlers for LSP
-      local default_handlers = {
-        ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
-        ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" }),
       }
 
       -- nvim-cmp supports additional completion capabilities
@@ -96,7 +127,6 @@ return {
         vim.lsp.config(name, {
           capabilities = default_capabilities,
           filetypes = config.filetypes,
-          handlers = vim.tbl_deep_extend("force", {}, default_handlers, config.handlers or {}),
           on_attach = on_attach,
           settings = config.settings,
         })

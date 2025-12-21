@@ -74,3 +74,6 @@ if is_windows then
   vim.o.shellquote = "\""
   vim.o.shellxquote = ""
 end
+
+-- Rounded borders for floating windows
+vim.o.winborder = "rounded"
