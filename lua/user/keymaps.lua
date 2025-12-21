@@ -82,6 +82,9 @@ end, { desc = "[/] Fuzzily search in current buffer]" })
 
 -- LSP Keybinds --
 M.map_lsp_keybinds = function(buffer_number)
+  -- Format the current buffer
+  nnoremap("<leader>f", vim.lsp.buf.format, { desc = "Format buffer", buffer = buffer_number })
+
   nnoremap("<leader>rn", vim.lsp.buf.rename, { desc = "LSP: [R]e[n]ame", buffer = buffer_number })
   nnoremap("<leader>ca", vim.lsp.buf.code_action, { desc = "LSP: [C]ode [A]ction", buffer = buffer_number })
 
