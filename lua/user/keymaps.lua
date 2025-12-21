@@ -12,6 +12,12 @@ local TERM = os.getenv("TERM")
 -- Disable Space bar since it'll be used as the leader key
 nnoremap("<space>", "<nop>")
 
+-- Debug keypresses
+vim.keymap.set("n", "<leader>kk", function()
+  local key = vim.fn.getcharstr()
+  print(vim.fn.keytrans(key))
+end, { desc = "Show next key pressed" })
+
 -- Open Explorer
 vim.keymap.set("n", "<leader>pv", "<cmd>Oil<CR>")
 
@@ -19,12 +25,23 @@ vim.keymap.set("n", "<leader>pv", "<cmd>Oil<CR>")
 vim.keymap.set("n", "<leader>rh", "<cmd>noh<CR>", { desc = "[r]emove [h]ighlights" })
 
 -- Using splits
-vim.keymap.set("n", "<C-A-Right>", "<cmd>vsplit<CR> <cmd>wincmd l<CR>")
-vim.keymap.set("n", "<C-A-Down>", "<cmd>split<CR> <cmd>wincmd j<CR>")
-vim.keymap.set("n", "<C-Right>", "<cmd>wincmd l<CR>")
-vim.keymap.set("n", "<C-Left>", "<cmd>wincmd h<CR>")
-vim.keymap.set("n", "<C-Up>", "<cmd>wincmd k<CR>")
-vim.keymap.set("n", "<C-Down>", "<cmd>wincmd j<CR>")
+-- vim.keymap.set("n", "<C-A-Right>", "<cmd>vsplit<CR> <cmd>wincmd l<CR>")
+-- vim.keymap.set("n", "<C-A-Down>", "<cmd>split<CR> <cmd>wincmd j<CR>")
+-- vim.keymap.set("n", "<C-Right>", "<cmd>wincmd l<CR>")
+-- vim.keymap.set("n", "<C-Left>", "<cmd>wincmd h<CR>")
+-- vim.keymap.set("n", "<C-Up>", "<cmd>wincmd k<CR>")
+-- vim.keymap.set("n", "<C-Down>", "<cmd>wincmd j<CR>")
+
+-- splits
+vim.keymap.set("n", "<leader>wv", "<cmd>vsplit<CR>", { desc = "Split vertical" })
+vim.keymap.set("n", "<leader>wh", "<cmd>split<CR>", { desc = "Split horizontal" })
+
+-- navigation
+vim.keymap.set("n", "<leader>w", "<C-w>", { desc = "Window prefix" })
+-- vim.keymap.set("n", "<C-h>", "<C-w>h")
+-- vim.keymap.set("n", "<C-j>", "<C-w>j")
+-- vim.keymap.set("n", "<C-k>", "<C-w>k")
+-- vim.keymap.set("n", "<C-l>", "<C-w>l")
 
 -- Using tabs
 vim.keymap.set("n", "<leader>tn", "<cmd>tabedit %<CR>")
