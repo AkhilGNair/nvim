@@ -50,7 +50,13 @@ return {
         lua_ls = {
           settings = {
             Lua = {
-              workspace = { checkThirdParty = false },
+              diagnostics = {
+                globals = { "vim" },
+              },
+              workspace = {
+                library = { vim.env.VIMRUNTIME },
+                checkThirdParty = false
+              },
               telemetry = { enabled = false },
             },
           },
