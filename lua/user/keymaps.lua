@@ -75,6 +75,15 @@ nnoremap("<leader>en", function()
     cwd = vim.fn.stdpath("config")
   }
 end, { desc = "[E]dit [N]eovim" })
+
+nnoremap("<leader>eb", function()
+  require("telescope.builtin").find_files {
+    cwd = os.getenv("HOME"),
+    find_command = { "rg", "--files", "--hidden", "--max-depth", "1" },
+    default_text = ".bash"
+  }
+end, { desc = "[E]dit [B]ash config" })
+
 nnoremap("<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
 
 nnoremap("<leader>sc", function()

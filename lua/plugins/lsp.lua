@@ -37,12 +37,6 @@ return {
         automatic_installation = true
       })
 
-      -- Override tsserver diagnostics to filter out specific messages
-      local messages_to_filter = {
-        "This may be converted to an async function.",
-        "<Place diagnostics to filter here.>",
-      }
-
       -- LSP servers to install (see list here: https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers )
       local servers = {
         bashls = {},
@@ -74,6 +68,12 @@ return {
           settings = {
             ['helm-ls'] = {
               logLevel = "info",
+              filetypes = {
+                "helm",
+                "yaml.helm"
+              },
+
+              -- Ensure values files are considered
               valuesFiles = {
                 mainValuesFile = "values.yaml",
                 additionalValuesFilesGlobPattern = "values*.yaml"
@@ -90,9 +90,7 @@ return {
                 path = "yaml-language-server",
                 initTimeoutSeconds = 3,
                 config = {
-                  schemas = {
-                    kubernetes = "templates/**",
-                  },
+                  schemas = { kubernetes = "templates/**" },
                   completion = true,
                   hover = true,
                 }
@@ -101,11 +99,14 @@ return {
           }
         },
         yamlls = {
-          filetypes = { "yaml", "yml" },
+          filetypes = { "yaml", "yml", "yaml.helm-values" },
           settings = {
             yaml = {
-              format = { enable = true }
-            }
+              validate = true,
+              completion = true,
+              hover = true,
+              schemaStore = { enable = false }
+            },
           }
         },
         terraformls = {},
@@ -128,7 +129,7 @@ return {
           capabilities = default_capabilities,
           filetypes = config.filetypes,
           on_attach = on_attach,
-          settings = config.settings,
+          settings = config.settings
         })
       end
 

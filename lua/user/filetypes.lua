@@ -5,9 +5,6 @@ vim.filetype.add({
     ['.*/templates/.*%.tpl']    = 'helm',
     ['.*/templates/.*%.gotmpl'] = 'helm',
     ['.*/_helpers%.tpl']        = 'helm',
-  },
-  filename = {
-    ['values.yaml'] = 'yaml.helm-values',
-    ['values.yml']  = 'yaml.helm-values',
-  },
+    ['.*/values.*%.yaml']       = 'yaml.helm-values',
+  }
 })
