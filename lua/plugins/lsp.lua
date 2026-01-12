@@ -63,7 +63,6 @@ return {
             },
           },
         },
-        ruff = {},
         helm_ls = {
           settings = {
             ['helm-ls'] = {
@@ -105,7 +104,7 @@ return {
               validate = true,
               completion = true,
               hover = true,
-              schemaStore = { enable = false }
+              schemaStore = { enable = false },
             },
           }
         },
@@ -123,13 +122,22 @@ return {
         map_lsp_keybinds(buffer_number)
       end
 
+      vim.lsp.config("ruff", {
+        cmd = {
+          "ruff",
+          "server",
+          "--config",
+          vim.fn.expand("~/.config/ruff/ruff.toml"),
+        },
+      })
+
       -- Iterate over our servers and set them up
       for name, config in pairs(servers) do
         vim.lsp.config(name, {
           capabilities = default_capabilities,
           filetypes = config.filetypes,
           on_attach = on_attach,
-          settings = config.settings
+          settings = config.settings,
         })
       end
 
@@ -138,6 +146,12 @@ return {
         float = {
           border = "rounded",
         },
+        virtual_text = {
+          prefix = "●",
+          source = "if_many",
+        },
+        signs = true,
+        underline = true,
       })
     end,
   },

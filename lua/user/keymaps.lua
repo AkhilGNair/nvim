@@ -30,10 +30,25 @@ vim.keymap.set("n", "<leader>wh", "<cmd>split<CR>", { desc = "Split horizontal" 
 
 -- navigation
 vim.keymap.set("n", "<leader>w", "<C-w>", { desc = "Window prefix" })
-vim.keymap.set("n", "<C-h>", "<C-w>h")
-vim.keymap.set("n", "<C-j>", "<C-w>j")
-vim.keymap.set("n", "<C-k>", "<C-w>k")
-vim.keymap.set("n", "<C-l>", "<C-w>l")
+-- vim.keymap.set("n", "<C-h>", "<C-w>h")
+-- vim.keymap.set("n", "<C-j>", "<C-w>j")
+-- vim.keymap.set("n", "<C-k>", "<C-w>k")
+-- vim.keymap.set("n", "<C-l>", "<C-w>l")
+
+-- zoom mode
+local zoomed = false
+local restore_cmd = nil
+
+vim.keymap.set("n", "<leader>z", function()
+  if not zoomed then
+    restore_cmd = vim.fn.winrestcmd()
+    vim.cmd("resize | vertical resize")
+    zoomed = true
+  else
+    vim.cmd(restore_cmd)
+    zoomed = false
+  end
+end, { desc = "Zoom / restore split" })
 
 -- Using tabs
 vim.keymap.set("n", "<leader>tn", "<cmd>tabedit %<CR>")
